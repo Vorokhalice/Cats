@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Breed">
+<GridLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:columnCount="2">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill_horizontal">
+    </Spinner>
+
+    <ImageView
+        android:id="@+id/breed_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_columnSpan="2"/>
+
+    <TextView
+        android:id="@+id/breed_name"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:layout_columnSpan="2"/>
+
+    <TextView
+        android:id="@+id/breed_temperament"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_columnSpan="2"/>
+
+    <TextView
+        android:id="@+id/breed_description"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_columnSpan="2"/>
+
+    <TextView
+        android:id="@+id/breed_weight"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_columnSpan="2"/>
+
+
+    <TextView
+        android:id="@+id/breed_life"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_columnSpan="2"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Affection Level"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_affect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Adaptability"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_adapt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Child Friendly"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Dog Friendly"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_dog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Energy Level"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_energy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Grooming"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_groom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Health Issues"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_health"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Intelligence"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_smart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Shedding Level"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_shed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Social Needs"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_social"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Stranger Friendly"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_stranger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Vocalisation"
+        android:layout_gravity="center"
+        android:layout_column="0"/>
+
+    <RatingBar
+        android:id="@+id/rating_vocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="1"/>
+
+    <TextView
+        android:id="@+id/breed_wikipedia"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="#1512e5"
+        android:layout_gravity="center_horizontal"
+        android:layout_columnSpan="2"
+        android:text="Wikipedia">
+    </TextView>
+</GridLayout>
+</ScrollView>

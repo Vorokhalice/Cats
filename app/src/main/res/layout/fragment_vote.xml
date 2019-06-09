@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="2"
+    tools:context=".Vote">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/love_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
+        android:layout_columnWeight="1"
+        android:background="#03C03C"
+        android:text="love it" />
+
+    <Button
+        android:id="@+id/nope_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
+        android:background="#DA413D"
+        android:layout_columnWeight="1"
+        android:text="nope it" />
+
+    <ImageView
+        android:id="@+id/vote_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2" />
+
+    <Button
+        android:id="@+id/fave_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_gravity="end"
+        android:text="Fave" />
+</GridLayout>
