@@ -66,6 +66,7 @@ public class Vote extends Fragment implements Observer<VoteEntity> {
                 Picasso.get().load(voteEntity.voteImageUrl).into(voteImg);
                 url = voteEntity.voteImageUrl;
                 editor.putString("url", url);
+                editor.putString("image_id", voteEntity.voteImageId);
                 editor.apply();
             }
         }
@@ -98,13 +99,15 @@ public class Vote extends Fragment implements Observer<VoteEntity> {
         if (voteEntity != null) {
             vote = sharedPreferences.getInt("vote", -1);
             url = sharedPreferences.getString("url", "");
+            id = sharedPreferences.getString("image_id", "");
             if (vote == -1) {
                 url = voteEntity.voteImageUrl;
                 Picasso.get().load(url).into(voteImg);
                 editor.putString("url", url);
+                editor.putString("image_id",voteEntity.voteImageId);
+                editor.putInt("vote", vote);
                 editor.apply();
                 vote = 2;
-                editor.putInt("vote", vote);
                 editor.apply();
             }
             else Picasso.get().load(url).into(voteImg);
@@ -138,7 +141,6 @@ public class Vote extends Fragment implements Observer<VoteEntity> {
                     editor.apply();
                 }
             });
-            Log.e("Vote", ""+vote);
         }
     }
 
@@ -171,11 +173,11 @@ public class Vote extends Fragment implements Observer<VoteEntity> {
         faveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myFave.setImage_id(id);
+                myFave.setImage_id(sharedPreferences.getString("image_id", ""));
                 repository.postFaveData(myFave);
+                Log.e("Vote", ""+vote+""+id);
             }
         });
-
         return view;
     }
 
