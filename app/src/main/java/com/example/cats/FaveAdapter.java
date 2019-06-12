@@ -1,5 +1,6 @@
 package com.example.cats;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -38,15 +40,18 @@ public class FaveAdapter  extends RecyclerView.Adapter<FaveAdapter.FaveHolder>{
         this.faves = faves;
         notifyDataSetChanged();
     }
-    class FaveHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class FaveHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Button faveDelete;
         private ImageView faveImage;
+        private SharedPreferences sharedPreferences;
+        private SharedPreferences.Editor editor;
 
         public FaveHolder(View view) {
             super(view);
             faveImage = view.findViewById(R.id.fave_image);
             faveDelete = view.findViewById(R.id.fave_delete);
             faveDelete.setOnClickListener(this);
+            sharedPreferences = Fave.getContextOfFave().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         }
 
        @Override

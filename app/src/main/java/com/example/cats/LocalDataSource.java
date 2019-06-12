@@ -38,7 +38,7 @@ public class LocalDataSource {
                 favesList.add(faveEntity);
             }
             db.catsDao().insertFave(favesList);
-            Log.e("Local", " " + favesList);
+            Log.e("LOCAL", " " + favesList);
         }
     }
     public LiveData<List<FaveEntity>> getFaveImages(){
@@ -90,4 +90,40 @@ public class LocalDataSource {
     public LiveData<BreedEntity> getBreed() {
         return db.catsDao().getBreed();
     }
+    public void storeCategories(List<Categories> categories) {
+        if (categories!= null) {
+            db.catsDao().deleteCategories();
+            List<CategoriesEntity> categoriesList = new ArrayList<>();
+            for (Categories categories1: categories) {
+                CategoriesEntity categoriesEntity = new CategoriesEntity();
+                categoriesEntity.category_name = categories1.getName();
+                categoriesEntity.category_id = categories1.getId();
+                categoriesList.add(categoriesEntity);
+            }
+            db.catsDao().insertCategories(categoriesList);
+            Log.e("Local", "CategoriesList" + categoriesList);
+        }
+    }
+    public LiveData<List<CategoriesEntity>> getCategories() {
+        return db.catsDao().getCategories();
+    }
+    public void storeCategory(List<Images> images) {
+        if (images!= null) {
+            db.catsDao().deleteCategory();
+            List<CategoryEntity> categoryList = new ArrayList<>();
+            for (Images images1: images) {
+                CategoryEntity categoryEntity = new CategoryEntity();
+                categoryEntity.imageCategoryUrl = images1.getUrl();
+                categoryEntity.imageCategoryId = images1.getId();
+                categoryList.add(categoryEntity);
+            }
+            db.catsDao().insertCategory(categoryList);
+            Log.e("Local", "BreedsList" + categoryList);
+        }
+    }
+    public LiveData<List<CategoryEntity>> getCategory() {
+        return db.catsDao().getCategory();
+    }
+    //public void updateFaves(List<>) { return db.catsDao().updateFave();}
+
 }

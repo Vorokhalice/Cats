@@ -34,7 +34,7 @@ public class RemoteDataSource {
 
 
     public List<Images> getImagesForVote() {
-        Call<List<Images>> call = catsService.getVoteImage(API_KEY);
+        Call<List<Images>> call = catsService.getVoteImage(API_KEY, "jpg,png");
         try {
             Response<List<Images>> response = call.execute();
             if (response.isSuccessful()) {
@@ -69,7 +69,7 @@ public class RemoteDataSource {
         try {
             Response<ResponseBody> response = call.execute();
             if (response.isSuccessful()) {
-                Log.e("Remote", "Deleted");
+                Log.e("Remote ", "Deleted");
             }
             else {BufferedReader reader = null;
             StringBuilder sb = new StringBuilder();
@@ -100,7 +100,7 @@ public class RemoteDataSource {
         try {
             Response<ResponseBody> response = call.execute();
             if (response.isSuccessful()) {
-                Log.e("Remote", "faved");
+                Log.e("REMOTE", "FAVED");
             }
             else {BufferedReader reader = null;
                 StringBuilder sb = new StringBuilder();
@@ -169,7 +169,7 @@ public class RemoteDataSource {
         return null;
     }
     public List<Images> getBreed(String breed_id) {
-        Call<List<Images>> call = catsService.getBreed(breed_id, API_KEY);
+        Call<List<Images>> call = catsService.getBreed(breed_id, "jpg,png", API_KEY);
         try {
             Response<List<Images>> response = call.execute();
             if (response.isSuccessful()) {
@@ -178,6 +178,46 @@ public class RemoteDataSource {
             }
         } catch (IOException ioex) {
             Log.e("Remote", "Breed " + ioex);
+        }
+        return null;
+    }
+    public List<Categories> getCategories() {
+        Log.e("RemoteSearch","");
+        Call<List<Categories>> call = catsService.getCategories(API_KEY);
+        try {
+            Response<List<Categories>> response = call.execute();
+            if (response.isSuccessful()) {
+                Log.e("Remote", "categories ok");
+                return response.body();
+            }
+        } catch (IOException ioex) {
+            Log.e("Remote", "categories " + ioex);
+        }
+        return null;
+    }
+    public List<Images> getImages(int category) {
+        Call<List<Images>> call = catsService.getImages(20, "jpg,png","random", category, API_KEY);
+        try {
+            Response<List<Images>> response = call.execute();
+            if (response.isSuccessful()) {
+                Log.e("Remote", "category images ok");
+                return response.body();
+            }
+        } catch (IOException ioex) {
+            Log.e("Remote", "category images " + ioex);
+        }
+        return null;
+    }
+    public List<Images> getAllImages() {
+        Call<List<Images>> call = catsService.getAllImages(20, "jpg,png", "random", API_KEY);
+        try {
+            Response<List<Images>> response = call.execute();
+            if (response.isSuccessful()) {
+                Log.e("Remote", "images ok");
+                return response.body();
+            }
+        } catch (IOException ioex) {
+            Log.e("Remote", "images " + ioex);
         }
         return null;
     }

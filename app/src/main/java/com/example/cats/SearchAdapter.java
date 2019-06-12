@@ -33,11 +33,11 @@ import static android.content.Context.MODE_PRIVATE;
 import static android.view.View.GONE;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHolder>{
-    private List<Images> images;
-    public SearchAdapter(List<Images> images) {
+    private List<CategoryEntity> images;
+    public SearchAdapter(List<CategoryEntity> images) {
         this.images = images;
     }
-    public void changeData(List<Images> images) {
+    public void changeData(List<CategoryEntity> images) {
         this.images = images;
         notifyDataSetChanged();
     }
@@ -58,15 +58,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
         public void onClick(View v) {
             myFave = new MyFave();
             sharedPreferences = MainActivity.getContextOfApplication().getSharedPreferences("MyPrefs", MODE_PRIVATE);
-            myFave.setImage_id(images.get(getAdapterPosition()).getId());
+            myFave.setImage_id(images.get(getAdapterPosition()).imageCategoryId);
             myFave.setSub_id(sharedPreferences.getString("name", null));
             Log.e("Search", sharedPreferences.getString("name", null));
             Repository repository = new Repository(Search.getContextOfSearch());
             repository.postFaveData(myFave);
         }
 
-        public void setContent(Images image) {
-            Picasso.get().load(image.getUrl()).into(searchImage);
+        public void setContent(CategoryEntity image) {
+            Picasso.get().load(image.imageCategoryUrl).into(searchImage);
         }
     }
     @NonNull

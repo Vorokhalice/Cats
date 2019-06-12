@@ -41,39 +41,36 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Vote.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Vote#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Vote extends Fragment /*implements Observer<VoteEntity>*/ {
+public class Vote extends Fragment implements Observer<VoteEntity> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-   // private ImageVoteService imageVoteService;
-    private static String API_KEY = "19da309d-127a-4147-8bb8-4c0c05e39452";
-    //private VoteService voteService;
     private MyVote myVote;
+    private int vote = -1;
+    SharedPreferences.Editor editor;
     private SharedPreferences sharedPreferences;
-   // private PostVoteService postVoteService;
+    private MainViewModelVote mainViewModelVote;
     private MyFave myFave;
     private ImageView voteImg;
     private LiveData<VoteEntity> voteData;
+    private Button loveButton;
+    private Button nopeButton;
+    private Button faveButton;
+    private Repository repository;
+    private String url;
     Observer<VoteEntity> observer = new Observer<VoteEntity>() {
         @Override
         public void onChanged(VoteEntity voteEntity) {
             if (voteEntity != null) {
                 Picasso.get().load(voteEntity.voteImageUrl).into(voteImg);
-                id = voteEntity.voteImageId;
+                url = voteEntity.voteImageUrl;
+                editor.putString("url", url);
+                editor.apply();
             }
         }
     };
     public static Context contextOfVote;
-    private int vote;
     private VoteEntity voteEntity;
     private String id;
 
@@ -87,24 +84,6 @@ public class Vote extends Fragment /*implements Observer<VoteEntity>*/ {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Vote.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Vote newInstance(String param1, String param2) {
-        Vote fragment = new Vote();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,13 +93,54 @@ public class Vote extends Fragment /*implements Observer<VoteEntity>*/ {
         }
     }
 
-    /*@Override
+    @Override
     public void onChanged(VoteEntity voteEntity) {
         if (voteEntity != null) {
-            Picasso.get().load(voteEntity.voteImageUrl).into(voteImg);
+            vote = sharedPreferences.getInt("vote", -1);
+            url = sharedPreferences.getString("url", "");
+            if (vote == -1) {
+                url = voteEntity.voteImageUrl;
+                Picasso.get().load(url).into(voteImg);
+                editor.putString("url", url);
+                editor.apply();
+                vote = 2;
+                editor.putInt("vote", vote);
+                editor.apply();
+            }
+            else Picasso.get().load(url).into(voteImg);
             id = voteEntity.voteImageId;
+            myVote = new MyVote();
+            loveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vote = 1;
+                    myVote.setValue(vote);
+                    myVote.setImage_id(id);
+                    mainViewModelVote.loadVoteData(repository);
+                    voteData = mainViewModelVote.getVoteData();
+                    repository.postVoteData(myVote);
+                    voteData.observe(getViewLifecycleOwner(), observer);
+                    editor.putInt("vote", vote);
+                    editor.apply();
+                }
+            });
+            nopeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vote = 0;
+                    myVote.setValue(vote);
+                    myVote.setImage_id(id);
+                    mainViewModelVote.loadVoteData(repository);
+                    voteData = mainViewModelVote.getVoteData();
+                    repository.postVoteData(myVote);
+                    voteData.observe(getViewLifecycleOwner(), observer);
+                    editor.putInt("vote", vote);
+                    editor.apply();
+                }
+            });
+            Log.e("Vote", ""+vote);
         }
-    }*/
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -133,129 +153,27 @@ public class Vote extends Fragment /*implements Observer<VoteEntity>*/ {
         int height = displaymetrics.heightPixels / 2;
         voteImg = view.findViewById(R.id.vote_image);
         voteImg.getLayoutParams().height = height;
-        final MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        final Repository repository = new Repository(contextOfVote);
-        mainViewModel.loadVoteData(repository);
-        voteData = mainViewModel.getVoteData();
-        voteData.observe(this, observer);
-        Button loveButton = view.findViewById(R.id.love_button);
-        Button nopeButton = view.findViewById(R.id. nope_button);
-        Button faveButton = view.findViewById(R.id. fave_button);
+        loveButton = view.findViewById(R.id.love_button);
+        nopeButton = view.findViewById(R.id. nope_button);
+        faveButton = view.findViewById(R.id. fave_button);
         myFave = new MyFave();
         myVote = new MyVote();
         sharedPreferences = contextOfVote.getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        editor =  sharedPreferences.edit();
         myVote.setSub_id(sharedPreferences.getString("name", null));
         myFave.setSub_id(sharedPreferences.getString("name", null));
-        loveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myVote.setValue(1);
-                myVote.setImage_id(id);
-                repository.postVoteData(myVote);
-                //mainViewModel.loadVoteData(repository);
-                //voteData = mainViewModel.getVoteData();
-                voteData.observe(getViewLifecycleOwner(), observer);
-            }
-
-                /*mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
-                Repository repository = new Repository(getContext());
-                mainViewModel.loadVoteData(repository);
-                voteData = mainViewModel.getVoteData();
-                voteData.observe(getViewLifecycleOwner(), new Observer<VoteEntity>() {
-                    @Override
-                    public void onChanged(VoteEntity voteEntity) {
-
-                    }
-                })
-                /*myVote.setValue(1);
-                myVote.setImage_id(id);
-                voteService.postVote(myVote, API_KEY, "application/json").enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()) {
-                            Log.e("Vote", "succeess");
-                        }
-                        else Log.e("Vote", "not success" + response);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("Vote", "Fail");
-                    }
-                });
-                imageVoteService.getVoteImage(API_KEY).enqueue(new Callback<List<Images>>() {
-                    @Override
-                    public void onResponse(Call<List<Images>> call, Response<List<Images>> response) {
-                        if (response.isSuccessful()) {
-                            final List<Images> image = response.body();
-                            Picasso.get().load(image.get(0).getUrl()).into(voteImg);
-                            id = image.get(0).getId();
-                        }
-                    }
-                    @Override
-                    public void onFailure (Call <List<Images>> call, Throwable t){
-                        Log.e("Main", "Exception" + t.toString());
-                    }
-                });
-            }*/
-        });
-        nopeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myVote.setValue(0);
-                myVote.setImage_id(id);
-                repository.postVoteData(myVote);
-                mainViewModel.loadVoteData(repository);
-                voteData = mainViewModel.getVoteData();
-            }
-                /*voteService.postVote(myVote, API_KEY, "application/json").enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()) {
-                            Log.e("Vote", "success");
-                        }
-                        else Log.e("Vote", "not success" + response);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("Vote", "Fail");
-                    }
-                });
-                imageVoteService.getVoteImage(API_KEY).enqueue(new Callback<List<Images>>() {
-                    @Override
-                    public void onResponse(Call<List<Images>> call, Response<List<Images>> response) {
-                        if (response.isSuccessful()) {
-                            final List<Images> image = response.body();
-                            Picasso.get().load(image.get(0).getUrl()).into(voteImg);
-                            id = image.get(0).getId();
-                        }
-                    }
-                    @Override
-                    public void onFailure (Call <List<Images>> call, Throwable t){
-                        Log.e("Main", "Exception" + t.toString());
-                    }
-                });
-            }*/
-        });
+        mainViewModelVote = ViewModelProviders.of(getActivity()).get(MainViewModelVote.class);
+        repository = new Repository(contextOfVote);
+        mainViewModelVote.loadVoteData(repository);
+        voteData = mainViewModelVote.getVoteData();
+        repository.postVoteData(myVote);
+        voteData.observe(getViewLifecycleOwner(), this);
         faveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myFave.setImage_id(id);
                 repository.postFaveData(myFave);
             }
-               /* postVoteService.postFave(API_KEY, "application/json", myFave).enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                    }
-                });
-            }*/
         });
 
         return view;
@@ -285,16 +203,6 @@ public class Vote extends Fragment /*implements Observer<VoteEntity>*/ {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

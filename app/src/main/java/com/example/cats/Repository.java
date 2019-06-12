@@ -1,6 +1,7 @@
 package com.example.cats;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -41,6 +42,8 @@ public class Repository {
             @Override
             public void run() {
                 remoteDataSource.deleteMyFave(fav_id);
+                List<Faves> faves = remoteDataSource.getMyFaves();
+                localDataSource.storeFaves(faves);
             }
 
         });
@@ -50,6 +53,9 @@ public class Repository {
             @Override
             public void run() {
                 remoteDataSource.postMyFave(myFave);
+                List<Faves> faves = remoteDataSource.getMyFaves();
+                Log.e("REPOSITORY", ""+faves);
+                localDataSource.storeFaves(faves);
             }
 
         });
@@ -85,5 +91,41 @@ public class Repository {
 
         });
         return localDataSource.getBreed();
+    }
+
+    public LiveData<List<CategoriesEntity>> getCategoriesData() {
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Categories> categories = remoteDataSource.getCategories();
+                localDataSource.storeCategories(categories);
+            }
+
+        });
+        return localDataSource.getCategories();
+    }
+
+    public LiveData<List<CategoryEntity>> getCategoryData(final int id) {
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Images> category= remoteDataSource.getImages(id);
+                localDataSource.storeCategory(category);
+            }
+
+        });
+        return localDataSource.getCategory();
+    }
+
+    public LiveData<List<CategoryEntity>> getNonCategoryData() {
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Images> category= remoteDataSource.getAllImages();
+                localDataSource.storeCategory(category);
+            }
+
+        });
+        return localDataSource.getCategory();
     }
 }

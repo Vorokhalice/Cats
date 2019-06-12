@@ -8,19 +8,7 @@ public class Breeds
 
     private String name;
 
-    private String cfa_url;
-
-    private String vetstreet_url;
-
-    private String vcahospitals_url;
-
     private String temperament;
-
-    private String origin;
-
-    private String country_codes;
-
-    private String country_code;
 
     private String description;
 
@@ -94,47 +82,11 @@ public class Breeds
     public String getName(){
         return this.name;
     }
-    public void setCfa_url(String cfa_url){
-        this.cfa_url = cfa_url;
-    }
-    public String getCfa_url(){
-        return this.cfa_url;
-    }
-    public void setVetstreet_url(String vetstreet_url){
-        this.vetstreet_url = vetstreet_url;
-    }
-    public String getVetstreet_url(){
-        return this.vetstreet_url;
-    }
-    public void setVcahospitals_url(String vcahospitals_url){
-        this.vcahospitals_url = vcahospitals_url;
-    }
-    public String getVcahospitals_url(){
-        return this.vcahospitals_url;
-    }
     public void setTemperament(String temperament){
         this.temperament = temperament;
     }
     public String getTemperament(){
         return this.temperament;
-    }
-    public void setOrigin(String origin){
-        this.origin = origin;
-    }
-    public String getOrigin(){
-        return this.origin;
-    }
-    public void setCountry_codes(String country_codes){
-        this.country_codes = country_codes;
-    }
-    public String getCountry_codes(){
-        return this.country_codes;
-    }
-    public void setCountry_code(String country_code){
-        this.country_code = country_code;
-    }
-    public String getCountry_code(){
-        return this.country_code;
     }
     public void setDescription(String description){
         this.description = description;

@@ -5,31 +5,12 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-public class MainViewModel extends ViewModel {
-    public MainViewModel(){}
+public class MainViewModelBreed extends ViewModel {
     private Repository repository;
-    LiveData<VoteEntity> voteData;
-    LiveData<List<FaveEntity>> faveData;
     LiveData<List<BreedsEntity>> breedsData;
     LiveData<BreedEntity> breedData;
-    public void loadVoteData(Repository repository) {
-        if (voteData == null) {
-            this.repository = repository;
-            voteData = repository.getVoteData();
-        }
-    }
-    public LiveData<VoteEntity> getVoteData(){
-        return voteData;
-    }
-    public void loadFaveData(Repository repository) {
-        if (faveData == null) {
-            this.repository = repository;
-            faveData = repository.getFaveData();
-        }
-    }
-    public LiveData<List<FaveEntity>> getFaveData(){
-        return faveData;
-    }
+    String id = "";
+    String url;
     public void loadBreedsData(Repository repository) {
         if (breedsData == null) {
             this.repository = repository;
@@ -40,9 +21,10 @@ public class MainViewModel extends ViewModel {
         return breedsData;
     }
     public void loadBreedData(Repository repository, String id) {
-        if (breedData == null) {
+        if (!this.id.equals(id)) {
             this.repository = repository;
             breedData = repository.getBreedData(id);
+            this.id = id;
         }
     }
     public LiveData<BreedEntity> getBreedData(){
