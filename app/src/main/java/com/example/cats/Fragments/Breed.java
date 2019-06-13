@@ -1,4 +1,4 @@
-package com.example.cats;
+package com.example.cats.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,10 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Query;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,6 +23,12 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.cats.CatsApp;
+import com.example.cats.mainViewModels.MainViewModelBreed;
+import com.example.cats.R;
+import com.example.cats.data.Repository;
+import com.example.cats.entities.BreedEntity;
+import com.example.cats.entities.BreedsEntity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,11 +36,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Breed extends Fragment implements Observer<List<BreedsEntity>>/*, Observer */{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class Breed extends Fragment implements Observer<List<BreedsEntity>> {
     private SharedPreferences prefs;
     private MainViewModelBreed mainViewModelBreed;
     private Repository repository;
@@ -64,43 +62,29 @@ public class Breed extends Fragment implements Observer<List<BreedsEntity>>/*, O
     private RatingBar vocal;
     private ImageView img;
     private Spinner spinner;
-    private int pos;
-    private String name_prev = "";
     private List<String> data = new ArrayList<String>();
     private LiveData<List<BreedsEntity>> breedsData;
-    private RemoteDataSource remoteDataSource = new RemoteDataSource();
     private Observer<BreedEntity> observer = new Observer<BreedEntity>() {
         @Override
         public void onChanged(BreedEntity breedEntity) {
-            url = prefs.getString("url", "");
             if (breedEntity != null) {
                 Log.e("breed", breedEntity.imageBreedUrl);
                 url = breedEntity.imageBreedUrl;
                 Picasso.get().load(url).into(img);
             }
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("url", url);
-            editor.apply();
         }
     };
     private LiveData<BreedEntity> breedData;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
     public Breed() {
-        // Required empty public constructor
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
 
@@ -122,8 +106,6 @@ public class Breed extends Fragment implements Observer<List<BreedsEntity>>/*, O
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view,
                                                final int position, long id) {
-                        Log.e("Breed", "position " + position);
-                        pos = position;
                         name = data.get(position);
                         breed_name.setText(name);
                         breed_temperament.setText(breedEntities.get(position).temp);
@@ -169,18 +151,17 @@ public class Breed extends Fragment implements Observer<List<BreedsEntity>>/*, O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_breed, container, false);
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int height = displaymetrics.heightPixels / 3;
         prefs = getContext().getSharedPreferences("Prefs", MODE_PRIVATE);
         mainViewModelBreed = ViewModelProviders.of(this).get(MainViewModelBreed.class);
-        repository = new Repository(this.getContext());
+        repository = ((CatsApp)getActivity().getApplication()).getRepository();
         mainViewModelBreed.loadBreedsData(repository);
         breedsData = mainViewModelBreed.getBreedsData();
         breedsData.observe(this, this);
-        spinner = (Spinner) view.findViewById(R.id.spinner);
+        spinner = view.findViewById(R.id.spinner);
         img = view.findViewById(R.id.breed_image);
         breed_name = view.findViewById(R.id.breed_name);
         breed_temperament = view.findViewById(R.id.breed_temperament);
@@ -201,18 +182,9 @@ public class Breed extends Fragment implements Observer<List<BreedsEntity>>/*, O
         stranger = view.findViewById(R.id.rating_stranger);
         vocal = view.findViewById(R.id.rating_vocal);
         img.getLayoutParams().height = height;
-
-
-
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -232,7 +204,6 @@ public class Breed extends Fragment implements Observer<List<BreedsEntity>>/*, O
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

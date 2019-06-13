@@ -1,41 +1,33 @@
-package com.example.cats;
+package com.example.cats.adapters;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
+import com.example.cats.MainActivity;
+import com.example.cats.R;
+import com.example.cats.data.Repository;
+import com.example.cats.entities.CategoryEntity;
+import com.example.cats.pojo.MyFave;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
-import retrofit2.http.POST;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.view.View.GONE;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHolder>{
     private List<CategoryEntity> images;
-    public SearchAdapter(List<CategoryEntity> images) {
+    private Repository repository;
+    public SearchAdapter(List<CategoryEntity> images, Repository repository) {
         this.images = images;
+        this.repository = repository;
     }
     public void changeData(List<CategoryEntity> images) {
         this.images = images;
@@ -57,11 +49,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
         @Override
         public void onClick(View v) {
             myFave = new MyFave();
-            sharedPreferences = MainActivity.getContextOfApplication().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+            sharedPreferences = MainActivity.getContextOfApplication().getSharedPreferences("Prefs", MODE_PRIVATE);
             myFave.setImage_id(images.get(getAdapterPosition()).imageCategoryId);
             myFave.setSub_id(sharedPreferences.getString("name", null));
             Log.e("Search", sharedPreferences.getString("name", null));
-            Repository repository = new Repository(Search.getContextOfSearch());
             repository.postFaveData(myFave);
         }
 

@@ -1,4 +1,8 @@
-package com.example.cats;
+package com.example.cats.mainViewModels;
+
+import com.example.cats.data.Repository;
+import com.example.cats.entities.CategoriesEntity;
+import com.example.cats.entities.CategoryEntity;
 
 import java.util.List;
 

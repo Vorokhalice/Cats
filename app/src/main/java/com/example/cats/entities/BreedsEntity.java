@@ -1,4 +1,4 @@
-package com.example.cats;
+package com.example.cats.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

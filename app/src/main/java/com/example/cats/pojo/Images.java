@@ -1,4 +1,4 @@
-package com.example.cats;
+package com.example.cats.pojo;
 
 import java.util.List;
 
@@ -9,10 +9,6 @@ public class Images
     private String id;
 
     private String url;
-
-    private int width;
-
-    private int height;
 
     public void setBreeds(List<Breeds> breeds){
             this.breeds = breeds;
@@ -31,17 +27,5 @@ public class Images
     }
     public String getUrl(){
             return this.url;
-    }
-    public void setWidth(int width){
-            this.width = width;
-    }
-    public int getWidth(){
-            return this.width;
-    }
-    public void setHeight(int height){
-            this.height = height;
-    }
-    public int getHeight(){
-            return this.height;
     }
 }

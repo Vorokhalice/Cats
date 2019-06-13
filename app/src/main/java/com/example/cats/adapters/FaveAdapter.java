@@ -1,40 +1,30 @@
-package com.example.cats;
+package com.example.cats.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.cats.fragments.Fave;
+import com.example.cats.R;
+import com.example.cats.data.Repository;
+import com.example.cats.entities.FaveEntity;
 import com.squareup.picasso.Picasso;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.DELETE;
-import retrofit2.http.Header;
-import retrofit2.http.Path;
-
-import static android.view.View.GONE;
 
 public class FaveAdapter  extends RecyclerView.Adapter<FaveAdapter.FaveHolder>{
     private List<FaveEntity> faves;
-    public FaveAdapter(List<FaveEntity> faves) {
+    private Repository repository;
+    public FaveAdapter(List<FaveEntity> faves, Repository repository) {
         this.faves = faves;
+        this.repository = repository;
     }
     public void changeData(List<FaveEntity> faves) {
         this.faves = faves;
@@ -51,18 +41,16 @@ public class FaveAdapter  extends RecyclerView.Adapter<FaveAdapter.FaveHolder>{
             faveImage = view.findViewById(R.id.fave_image);
             faveDelete = view.findViewById(R.id.fave_delete);
             faveDelete.setOnClickListener(this);
-            sharedPreferences = Fave.getContextOfFave().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            sharedPreferences = Fave.getContextOfFave().getSharedPreferences("Prefs", Context.MODE_PRIVATE);
         }
 
        @Override
         public void onClick(View v) {
-            Repository repository = new Repository(Fave.getContextOfFave());
             repository.deleteFaveData(faves.get(getAdapterPosition()).fave_id);
         }
 
         public void setContent(FaveEntity faves) {
             Picasso.get().load(faves.faveImageUrl).into(faveImage);
-            Log.e("adapter","Exception");
         }
     }
     @NonNull
